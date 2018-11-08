@@ -1,0 +1,197 @@
+<template>
+	<div id="news">
+		<div class="rows clearfix">
+			<div class="col-md-10 col-sm-12 col-xs-12">
+				<div class="tab bg-white">
+					<ul class="clearfix">
+						<li v-for="(item,index) in titlearr" class="fl" @click="changetab(index)" :class="index==fag?'active':''">{{item}}</li>
+					</ul>
+				</div>
+				<div class="padder" style="min-height: 700px;">
+					<div v-for="(item,index) in infoarr"  class="mb20 pt20 po-relative clearfix" v-show='fag==0'>
+						<a :href="item.link" class="thumb-sm fl po-absolute" style="left: -20px;" target="_blank">
+							<!--<img :src="item.imgurl" alt="" />-->
+							<div class="pm lh40 center font22">{{index+1}}</div>
+						</a>
+						<div class="fl clearfix pl30" style="width: 100%;">
+							<a :href="item.link" target="_blank">
+								<img :src="item.imgurl" alt="" class="itemimg fl "/>
+							</a>
+							<a :href="item.link" target="_blank">
+								<div class="fl font20 pl30" style="width: 70%;">{{item.title}}</div>
+							</a>
+							<span class="fr pr20 time">
+								{{item.time}}
+							</span>
+						</div>
+					</div>
+					<div v-for="(item,index) in infoarr"  class="mb20 pt20 po-relative clearfix" v-show='fag==1'>
+						<a :href="item.link" class="thumb-sm fl po-absolute" style="left: -20px;" target="_blank">
+							<div class="pm lh40 center font22" style="background: orange;">{{index+1}}</div>
+						</a>
+						<div class="fl clearfix pl30" style="width: 100%;">
+							<div style="min-height: 150px;background: white;">
+								<div style="height: 50px; border-bottom: 1px solid rgb(241, 241, 241);">
+									<span></span>
+									<span class="fl font18 lh50 pl20 title-dc"><a :href="item.link" target="_blank">{{item.title}}</a></span>
+									<span class="fr font12 lh50 pr20">{{item.time}}</span>
+								</div>
+								<div class="font14 title-dc pr20 pl20 pt20">{{item.info}}</div>
+							</div>
+						</div>
+					</div>
+					<div v-for="(item,index) in infoarr"  class="mb20 pt20 po-relative clearfix" v-show='fag==2'>
+						<a :href="item.link" class="thumb-sm fl po-absolute" style="left: -20px;" target="_blank">
+							<div class="pm lh40 center font22" style="background: #5788E6;">{{index+1}}</div>
+						</a>
+						<div class="fl clearfix pl30" style="width: 100%;">
+							<div style="min-height: 150px;background: white;">
+								<div style="height: 50px; border-bottom: 1px solid rgb(241, 241, 241);">
+									<span></span>
+									<span class="fl font18 lh50 pl20 title-dc"><a :href="item.link" target="_blank">{{item.title}}</a></span>
+									<span class="fr font12 lh50 pr20">{{item.time}}</span>
+								</div>
+								<div class="font14 title-dc pr20 pl20 pt20">{{item.info}}</div>
+							</div>
+						</div>
+					</div>
+					<div v-for="(item,index) in infoarr"  class="mb20 pt20 po-relative clearfix" v-show='fag==3'>
+						<a :href="item.link" class="thumb-sm fl po-absolute" style="left: -20px;" target="_blank">
+							<div class="pm lh40 center font22" style="background: red;">{{index+1}}</div>
+						</a>
+						<div class="fl clearfix pl30" style="width: 100%;">
+							<div style="min-height: 150px;background: white;">
+								<div style="height: 50px; border-bottom: 1px solid rgb(241, 241, 241);">
+									<span></span>
+									<span class="fl font18 lh50 pl20 title-dc">{{item.title}}</span>
+									<span class="fr font12 lh50 pr20">{{item.time}}</span>
+								</div>
+								<div class="font14 title-dc pr20 pl20 pt20">{{item.info}}</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				
+				
+				
+			</div>
+			<div class="col-md-2 col-sm-0 "  style="height: 200px;background: blue;">
+				
+			</div>
+		</div>
+	</div>
+</template>
+
+<script>
+	export default{
+	    name:'news',
+		data () {
+	        return{
+	        	titlearr:['中金在线','东方财富','同花顺','新浪财经'],
+	        	fag:0,
+	        	infoarr:'',
+	        	
+	        }
+	     },
+	     mounted() {
+	     	var that = this;
+	     	that.$nextTick(function(){
+	     		that.getnewsData('zjzx')
+	     	})
+	     },
+	     methods:{
+	     	changetab (index) {
+	     		var that = this;
+	     		that.fag = index;
+	     		that.infoarr = ''
+	     		if(index == 0){
+	     			that.getnewsData('zjzx')
+	     		}else if (index == 1){
+	     			that.getnewsData('dfcf')
+	     		}else if (index == 2){
+	     			that.getnewsData('ths')
+	     		}else if (index ==3){
+	     			that.getnewsData('xlcj')
+	     		}
+	     	},
+	     	getnewsData(type){
+	     		var that = this;
+		   		dorequest({website:type},'getdata/getnews',function(res){
+		   			console.log(res.data.data)
+		   			that.infoarr  = res.data.data;
+		   		})
+	     	},
+	     },
+	}
+</script>
+
+<style>
+	@media (max-width: 991px){
+		.col-sm-0 {
+		    display: none;
+		}
+	}
+	a{
+		color: #000000;
+	}
+	a:hover{
+		text-decoration: none;
+	}
+	.tab{
+		border-bottom: 1px solid #dee5e7;
+		padding: 15px;
+	}
+	.tab li{
+		padding: 6px 12px;
+	}
+	.tab li:hover{
+		cursor: pointer;
+	}
+	.active {
+	    color: #fff !important;
+	    background-color: #23b7e5;
+	    border-radius: 5px;
+	}
+	.padder{
+		margin-left: 50px;
+		border-left: 1px solid #23b7e5;
+	}
+	.thumb-sm {
+	    display: inline-block;
+	    width: 60px;
+	    text-decoration: none!important;
+	}
+	.thumb-sm:hover{
+		opacity: 0.8;
+	}
+	.thumb-sm img{
+	    height: auto;
+	    max-width: 100%;
+	    vertical-align: middle;
+	    width: 100%;
+	    border-radius: 10%;
+	    margin-left: -40px;
+	}
+	.pm{
+		width:40px;
+		height: 40px;
+		background: #98d1a6;
+		border-radius: 50%;
+		color: white;
+	}
+	.itemimg{
+		width: 12rem;
+	    min-height: 1.4rem;
+	    display: inline-block;
+	    border-radius: 5px;
+	}
+	.time{
+		color:#8d8d8e;
+	}
+	.title-dc{
+		color: #58666e;
+	}
+	.title-dc a:hover{
+		color: #afafaf;
+	}
+</style>

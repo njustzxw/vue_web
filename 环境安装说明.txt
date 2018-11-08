@@ -1,0 +1,7 @@
+﻿在该文件的根目录下安装环境依赖
+如果电脑没有配备node环境，请先下载node  地址：https://nodejs.org/en/
+采用淘宝镜像代替npm:   npm install -g cnpm --registry=https://registry.npm.taobao.org
+上述环境搭配好后，依次安装：
+1. cnpm install
+2.cnpm install qs   (用到了qs的包)
+启动项目：cnpm start 
